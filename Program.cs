@@ -68,6 +68,7 @@ namespace Shift.Demo.Client
             var options = new Shift.Options();
             options.DBConnectionString = "Data Source=localhost\\SQL2014;Initial Catalog=BGProcess;user=bguser; password=bguser"; //should be in config or DB
             options.CacheConfigurationString= "localhost:6379,password=LZLxuFbuPCdxcizNuuDJ0EdoXit1YHoiln8lsTVzPgGTeNB1DkoETMeCZI3FNjvQ"; //should be in config
+            //options.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB if filled
 
             jobClient = new JobClient(options);
 
