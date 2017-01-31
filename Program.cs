@@ -13,7 +13,7 @@ namespace Shift.Demo.Client
     class Program
     {
         private static JobClient jobClient;
-        private static IList<int> addedJobIDs;
+        private static List<int> addedJobIDs;
         static void Main(string[] args)
         {
             InitShiftClient();
@@ -65,12 +65,13 @@ namespace Shift.Demo.Client
 
         private static void InitShiftClient()
         {
-            var options = new Shift.Options();
-            options.DBConnectionString = "Data Source=localhost\\SQL2014;Initial Catalog=BGProcess;user=bguser; password=bguser"; //should be in config or DB
-            options.CacheConfigurationString= "localhost:6379,password=LZLxuFbuPCdxcizNuuDJ0EdoXit1YHoiln8lsTVzPgGTeNB1DkoETMeCZI3FNjvQ"; //should be in config
+            var config = new Shift.ClientConfig();
+            config.DBConnectionString = "Data Source=localhost\\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;"; //should be in app.config or global DB
+            config.UseCache = true;
+            config.CacheConfigurationString= "localhost:6379"; //should be in config
             //options.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB if filled
 
-            jobClient = new JobClient(options);
+            jobClient = new JobClient(config);
 
             addedJobIDs = new List<int>();
         }
@@ -79,7 +80,7 @@ namespace Shift.Demo.Client
         {
             var job = new TestJob();
             var progress = new SynchronousProgress<ProgressInfo>();
-            var jobID = jobClient.Add("Shift.Demo.Client", -100, "Demo.Job", () => job.Start("Hello World", progress));
+            var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World", progress));
             addedJobIDs.Add(jobID.GetValueOrDefault());
             Console.WriteLine();
             Console.WriteLine("==> New Job added to Shift DB table");
@@ -87,7 +88,7 @@ namespace Shift.Demo.Client
 
         private static void StopJobs()
         {
-            jobClient.SetCommandStop((List<int>)addedJobIDs);
+            jobClient.SetCommandStop(addedJobIDs);
 
             Console.WriteLine();
             Console.WriteLine("==> Send 'STOP' command to Job(s) on Shift DB is completed.");
@@ -95,7 +96,8 @@ namespace Shift.Demo.Client
 
         private static void DeleteJobs()
         {
-            jobClient.DeleteJobs((List<int>)addedJobIDs);
+            jobClient.DeleteJobs(addedJobIDs);
+            addedJobIDs.Clear();
 
             Console.WriteLine();
             Console.WriteLine("==> Delete Job(s) on Shift DB is completed.");
@@ -103,7 +105,7 @@ namespace Shift.Demo.Client
 
         private static void ResetJobs()
         {
-            jobClient.ResetJobs((List<int>)addedJobIDs);
+            jobClient.ResetJobs(addedJobIDs);
 
             Console.WriteLine();
             Console.WriteLine("==> Reset Job(s) on Shift DB table is completed.");
