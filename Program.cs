@@ -3,6 +3,7 @@ using Shift.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,6 +20,7 @@ namespace Shift.Demo.Client
             InitShiftClient();
 
             ConsoleKeyInfo cki;
+            var breakFlag = true;
             do
             {
                 
@@ -40,8 +42,11 @@ namespace Shift.Demo.Client
                     case "5":
                         DeleteJobs();
                         break;
+                    case "6":
+                        breakFlag = false;
+                        break;
                 }
-            } while (cki.Key != ConsoleKey.Escape);
+            } while (breakFlag);
 
             //clean up jobs when exiting
             if(addedJobIDs.Count > 0)
@@ -59,18 +64,18 @@ namespace Shift.Demo.Client
             Console.WriteLine("3. Send 'STOP' command to Hello World job(s).");
             Console.WriteLine("4. Reset Hello World job(s).");
             Console.WriteLine("5. Delete Hello World job(s).");
-            Console.WriteLine("Press escape (ESC) key to exit.");
+            Console.WriteLine("6. Exit.");
+            Console.WriteLine("Press escape (6) key to exit.");
             return Console.ReadKey(false);
         }
 
         private static void InitShiftClient()
         {
             var config = new Shift.ClientConfig();
-            config.DBConnectionString = "Data Source=localhost\\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;"; //should be in app.config or global DB
-            config.UseCache = true;
-            config.CacheConfigurationString= "localhost:6379"; //should be in config
-            //options.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB if filled
-
+            config.DBConnectionString = ConfigurationManager.ConnectionStrings["ShiftDBConnection"].ConnectionString;
+            config.UseCache = Convert.ToBoolean(ConfigurationManager.AppSettings["UseCache"]);
+            config.CacheConfigurationString = ConfigurationManager.AppSettings["CacheConfigurationString"]; 
+            //config.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB
             jobClient = new JobClient(config);
 
             addedJobIDs = new List<int>();
