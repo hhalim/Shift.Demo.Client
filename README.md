@@ -1,19 +1,25 @@
 # Shift.Demo.Client
 The client demo works best with the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
 
-Before running this app, ensure that at the database storage is set up correctly and change the App.config file connection string.
+## Quick Startup
+- Run the sql script to create Shift database in [/setup/create_db.sql](https://github.com/hhalim/Shift.Demo.Client/blob/master/setup/create_db.sql). 
+- If you want to use Redis cache, setup and create a Redis instance.
+- Open the solution in Visual Studio, update the App.config connection string and cache.
 ```
-<add name="ShiftDBConnection" connectionString="Data Source=localhost\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
-```
+<connectionStrings>
+  <add name="ShiftDBConnection" connectionString="Data Source=localhost\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+</connectionStrings>
 
-If you use Redis cache, change the cache App.config to the Redis configuration.
+<appSettings>
+  <!-- Shift Cache - Redis -->
+  <add key="UseCache" value="true" />
+  <add key="RedisConfiguration" value="localhost:6379" />
+</appSettings>
 ```
-<add key="UseCache" value="true" />
-<add key="CacheConfigurationString" value="localhost:6379"/>
-```
+- Build and run the site.
+
 
 ## Menu
-
 ```
 Shift Client Demo
 1. Add a Hello World job.
