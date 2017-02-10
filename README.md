@@ -6,7 +6,7 @@ Before running this app, ensure that at the database storage is set up correctly
 <add name="ShiftDBConnection" connectionString="Data Source=localhost\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
 ```
 
-If you like to use Redis cache, change the cache App.config to the Redis configuration.
+If you use Redis cache, change the cache App.config to the Redis configuration.
 ```
 <add key="UseCache" value="true" />
 <add key="CacheConfigurationString" value="localhost:6379"/>
