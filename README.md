@@ -27,4 +27,4 @@ Press escape (6) key to exit.
 
 The 1. add job command insert a simple Hello World job in to Shift queue. Multiple jobs can be added pressing the 1. key multiple times. The 2. key show simple progress for existing jobs added by the client app. Use 6. key to exit the demo and automatically clean up and delete all jobs.
 
-To run the jobs added in Shift queue, run and start the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
+To run jobs added in Shift queue, run the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
