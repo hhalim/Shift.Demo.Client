@@ -12,7 +12,7 @@ If you like to use Redis cache, change the cache App.config to the Redis configu
 <add key="CacheConfigurationString" value="localhost:6379"/>
 ```
 
-### Menu
+## Menu
 
 ```
 Shift Client Demo
