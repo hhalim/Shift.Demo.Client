@@ -1,7 +1,7 @@
 # Shift.Demo.Client
 The client demo works best with the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
 
-## Quick Startup
+## Quick Start
 - Run the sql script to create Shift database in [/setup/create_db.sql](https://github.com/hhalim/Shift.Demo.Client/blob/master/setup/create_db.sql). 
 - If you want to use Redis cache, setup and create a Redis instance.
 - Open the solution in Visual Studio, update the App.config connection string and cache.
