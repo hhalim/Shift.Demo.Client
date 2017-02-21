@@ -16,7 +16,8 @@ The client demo works best with the [Shift.Demo.Server](https://github.com/hhali
   <add key="RedisConfiguration" value="localhost:6379" />
 </appSettings>
 ```
-- Build and run the site.
+- Build and run the console demo app.
+- To actually run jobs added by this demo client app, build and run the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app too.
 
 
 ## Menu
@@ -31,6 +32,5 @@ Shift Client Demo
 Press escape (6) key to exit.
 ```
 
-The 1. add job command insert a simple Hello World job in to Shift queue. Multiple jobs can be added pressing the 1. key multiple times. The 2. key show simple progress for existing jobs added by the client app. Use 6. key to exit the demo and automatically clean up and delete all jobs.
+The 1 key insert a simple Hello World job in to Shift queue. Multiple jobs can be added pressing the 1 key multiple times. The 2 key show simple progress for existing jobs added by the client app. Use 6 key to exit the demo and automatically clean up and delete jobs added by the client app.
 
-To run jobs added in Shift queue, run the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
