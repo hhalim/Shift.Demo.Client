@@ -2,18 +2,32 @@
 The client demo works best with the [Shift.Demo.Server](https://github.com/hhalim/Shift.Demo.Server) console app.
 
 ## Quick Start
+Install Redis for windows [Redis-x64-<version>.msi](https://github.com/MSOpenTech/redis/releases) package.
+
+Or to use the SQL Server:
 - Run the sql script to create Shift database in [/setup/create_db.sql](https://github.com/hhalim/Shift.Demo.Client/blob/master/setup/create_db.sql). 
-- If you want to use Redis cache, setup and create a Redis instance. Refer to [Shift Quick Setup](https://github.com/hhalim/Shift/wiki/Quick-Start#infrastructure-setup) for link to Redis windows MSI installation package.
-- Open the solution in Visual Studio, update the App.config connection string and cache.
+- If you want to use Redis cache, setup and create a Redis instance. 
+
+Open this project solution in Visual Studio, update the App.config connection string and cache.
+
 ```
 <connectionStrings>
-  <add name="ShiftDBConnection" connectionString="Data Source=localhost\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+    <!-- LOCAL SQL 
+    <add name="ShiftDBConnection" connectionString="Data Source=localhost\SQL2014;Initial Catalog=ShiftJobsDB;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+    -->
+    <add name="ShiftDBConnection" connectionString="localhost:6379" providerName="System.Data.Redis" />
 </connectionStrings>
 
 <appSettings>
-  <!-- Shift Cache - Redis -->
-  <add key="UseCache" value="true" />
-  <add key="RedisConfiguration" value="localhost:6379" />
+    <!-- 
+    <add key="StorageMode" value="mssql" />
+    -->
+    <add key="StorageMode" value="redis" />
+    
+    <!-- Azure Cache 
+    <add key="UseCache" value="true" />
+    <add key="CacheConfigurationString" value="localhost:6379" />
+    -->
 </appSettings>
 ```
 - Build and run the console demo app.
