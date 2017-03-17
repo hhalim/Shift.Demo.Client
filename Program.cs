@@ -73,9 +73,12 @@ namespace Shift.Demo.Client
         {
             var config = new Shift.ClientConfig();
             config.DBConnectionString = ConfigurationManager.ConnectionStrings["ShiftDBConnection"].ConnectionString;
-            config.UseCache = Convert.ToBoolean(ConfigurationManager.AppSettings["UseCache"]);
-            config.CacheConfigurationString = ConfigurationManager.AppSettings["CacheConfigurationString"]; 
+            config.StorageMode = ConfigurationManager.AppSettings["StorageMode"];
+
+            //config.UseCache = Convert.ToBoolean(ConfigurationManager.AppSettings["UseCache"]);
+            //config.CacheConfigurationString = ConfigurationManager.AppSettings["CacheConfigurationString"];
             //config.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB
+
             jobClient = new JobClient(config);
 
             addedJobIDs = new List<int>();
