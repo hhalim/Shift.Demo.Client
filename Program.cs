@@ -87,8 +87,9 @@ namespace Shift.Demo.Client
         private static void AddJob()
         {
             var job = new TestJob();
-            var progress = new SynchronousProgress<ProgressInfo>();
-            var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World", progress));
+            var progress = new SynchronousProgress<ProgressInfo>(); //just a place holder will be replaced by progress object from the server
+            var token = (new CancellationTokenSource()).Token; //just a place holder will be replaced by Token object from the server
+            var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World", progress, token));
             addedJobIDs.Add(jobID.GetValueOrDefault());
             Console.WriteLine();
             Console.WriteLine("==> New Job added to Shift DB table");
