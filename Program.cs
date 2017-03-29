@@ -14,7 +14,7 @@ namespace Shift.Demo.Client
     class Program
     {
         private static JobClient jobClient;
-        private static List<int> addedJobIDs;
+        private static List<string> addedJobIDs;
         static void Main(string[] args)
         {
             InitShiftClient();
@@ -81,7 +81,7 @@ namespace Shift.Demo.Client
 
             jobClient = new JobClient(config);
 
-            addedJobIDs = new List<int>();
+            addedJobIDs = new List<string>();
         }
 
         private static void AddJob()
@@ -90,7 +90,7 @@ namespace Shift.Demo.Client
             var progress = new SynchronousProgress<ProgressInfo>(); //just a place holder will be replaced by progress object from the server
             var token = (new CancellationTokenSource()).Token; //just a place holder will be replaced by Token object from the server
             var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World", progress, token));
-            addedJobIDs.Add(jobID.GetValueOrDefault());
+            addedJobIDs.Add(jobID);
             Console.WriteLine();
             Console.WriteLine("==> New Job added to Shift DB table");
         }
