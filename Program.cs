@@ -73,6 +73,7 @@ namespace Shift.Demo.Client
         {
             var config = new Shift.ClientConfig();
             config.DBConnectionString = ConfigurationManager.ConnectionStrings["ShiftDBConnection"].ConnectionString;
+            config.DBAuthKey = ConfigurationManager.AppSettings["DocumentDBAuthKey"];
             config.StorageMode = ConfigurationManager.AppSettings["StorageMode"];
 
             //config.UseCache = Convert.ToBoolean(ConfigurationManager.AppSettings["UseCache"]);
