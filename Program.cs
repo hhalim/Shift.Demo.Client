@@ -37,12 +37,18 @@ namespace Shift.Demo.Client
                         StopJobs();
                         break;
                     case "4":
-                        ResetJobs();
+                        PauseJobs();
                         break;
                     case "5":
-                        DeleteJobs();
+                        ContinueJobs();
                         break;
                     case "6":
+                        ResetJobs();
+                        break;
+                    case "7":
+                        DeleteJobs();
+                        break;
+                    case "8":
                         breakFlag = false;
                         break;
                 }
@@ -59,13 +65,15 @@ namespace Shift.Demo.Client
         {
             Console.WriteLine();
             Console.WriteLine("Shift Client Demo");
-            Console.WriteLine("1. Add a Hello World job.");
-            Console.WriteLine("2. Show progress for Hello World job(s).");
-            Console.WriteLine("3. Send 'STOP' command to Hello World job(s).");
-            Console.WriteLine("4. Reset Hello World job(s).");
-            Console.WriteLine("5. Delete Hello World job(s).");
-            Console.WriteLine("6. Exit.");
-            Console.WriteLine("Press escape (6) key to exit.");
+            Console.WriteLine("1. Add a 'Hello World!' job.");
+            Console.WriteLine("2. Show progress for jobs.");
+            Console.WriteLine("3. Send 'STOP' command.");
+            Console.WriteLine("4. Send 'PAUSE' command.");
+            Console.WriteLine("5. Send 'CONTINUE' command.");
+            Console.WriteLine("6. Reset all jobs.");
+            Console.WriteLine("7. Delete jobs.");
+            Console.WriteLine("8. Exit.");
+            Console.WriteLine("Press (8) key to exit.");
             return Console.ReadKey(false);
         }
 
@@ -76,8 +84,6 @@ namespace Shift.Demo.Client
             config.DBAuthKey = ConfigurationManager.AppSettings["DocumentDBAuthKey"];
             config.StorageMode = ConfigurationManager.AppSettings["StorageMode"];
 
-            //config.UseCache = Convert.ToBoolean(ConfigurationManager.AppSettings["UseCache"]);
-            //config.CacheConfigurationString = ConfigurationManager.AppSettings["CacheConfigurationString"];
             //config.EncryptionKey = "[OPTIONAL_ENCRYPTIONKEY]"; //optional, will encrypt parameters in DB
 
             jobClient = new JobClient(config);
@@ -89,11 +95,12 @@ namespace Shift.Demo.Client
         {
             var job = new TestJob();
             var progress = new SynchronousProgress<ProgressInfo>(); //just a place holder will be replaced by progress object from the server
-            var token = (new CancellationTokenSource()).Token; //just a place holder will be replaced by Token object from the server
-            var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World", progress, token));
+            var cancelToken = (new CancellationTokenSource()).Token; //just a place holder will be replaced by Token object from the server
+            var pauseToken = (new PauseTokenSource()).Token; //just a place holder will be replaced by Token object from the server
+            var jobID = jobClient.Add("Shift.Demo.Client", () => job.Start("Hello World!", progress, cancelToken, pauseToken));
             addedJobIDs.Add(jobID);
             Console.WriteLine();
-            Console.WriteLine("==> New Job added to Shift DB table");
+            Console.WriteLine("==> New job added to Shift DB table");
         }
 
         private static void StopJobs()
@@ -101,7 +108,23 @@ namespace Shift.Demo.Client
             jobClient.SetCommandStop(addedJobIDs);
 
             Console.WriteLine();
-            Console.WriteLine("==> Send 'STOP' command to Job(s) on Shift DB is completed.");
+            Console.WriteLine("==> 'STOP' command is sent.");
+        }
+
+        private static void PauseJobs()
+        {
+            jobClient.SetCommandPause(addedJobIDs);
+
+            Console.WriteLine();
+            Console.WriteLine("==> 'PAUSE' command is sent.");
+        }
+
+        private static void ContinueJobs()
+        {
+            jobClient.SetCommandContinue(addedJobIDs);
+
+            Console.WriteLine();
+            Console.WriteLine("==> 'CONTINUE' command is sent.");
         }
 
         private static void DeleteJobs()
